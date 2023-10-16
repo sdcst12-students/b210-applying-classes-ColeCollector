@@ -49,8 +49,11 @@ class game:
         
     def dealer(self,deck):
 
-        dealer = []
+        dealer = [deck[0]]
+        deck.pop(0)
         score = 0
+
+        print(f"Dealer's hand is: {dealer} with a value of {self.value(dealer)}")
 
         Done = False
 
@@ -77,11 +80,11 @@ class game:
     def decision(self):
         while True:
             choice = input("Would you like to hit or stand?")
-            if choice == "hit" or "Hit":
+            if choice == "hit" or choice == "Hit":
                 return True
                 
                 
-            elif choice == "stand" or "Stand":
+            elif choice == "stand" or choice == "Stand":
                 return False
             
     def player(self,deck):
@@ -89,35 +92,80 @@ class game:
         score = 0
         Done = False
 
-        while self.decision() == True and Done == False:
-            hand.append(deck[0])
+        hand.append(deck[0])
+        deck.pop(0)
+        
+        print(f"\nYour hand is {hand} with a value of {self.value(hand)}")
 
-            try:
-                hand.pop(0)
-                if (self.value(hand)) > 16:
-                    score = self.value(hand)
-                    Done = True
-            
-            except:
-                if self.value(hand)[0] > 16:
-                    score = self.value(hand)[0]
-                    Done = True
+        while Done == False:
 
-                elif self.value(hand)[1] > 16:
-                    score = self.value(hand)[1]
-                    Done = True
+            if self.decision() == True:
+                hand.append(deck[0])
+                deck.pop(0)
+                
+                if self.value(hand) == 21:
+                    break
+
+                else:
+                    print(f"\nYour hand is {hand} with a value of {self.value(hand)}")
+
+                    try:
+                        if (self.value(hand)) > 21:
+                            score = self.value(hand)
+                            Done = True
+
+                    
+                    except:
+                        if self.value(hand)[0] > 21:
+                            score = self.value(hand)[0]
+                            Done = True
+
+
+                        elif self.value(hand)[1] > 21:
+                            score = self.value(hand)[1]
+                            Done = True
+
+            else:
+                score = self.value(hand)
+                Done = True
+                
+
 
         return [ hand , score , deck ]
     
-    def __init__(self):
-        deck = self.createDeck()
-        print(self.dealer(deck))
-        print(self.player(deck))
+    def winner(self,computerh,computer,playerh,player):
+        print(f"Dealer's hand is {computerh}, with a value of {computer}")
+
+        if player > 21:
+            print(f"You busted")
         
+        elif computer == 21:
+            print("You lose, dealer had blackjack ")
+        
+        elif player == 21:
+            print(f"You win, you got blackjack! ")
+        
+        elif computer > player and computer < 21 :
+            print("You lost, dealer had a higher value hand")
+        
+        elif computer < player and computer < 21:
+            print("You won, you had a higher value hand")
 
+        elif computer > 21:
+            print("You won dealer busted")
+        
+        elif computer == player:
+            print("It's a draw")
 
+    def __init__(self):
+        while True:
+            deck = self.createDeck()
+            dealer = self.dealer(deck)
+            player = self.player(deck)
 
-        pass
+            self.winner(dealer[0],dealer[1],player[0],player[1])
+
+            pass
 
 
 
