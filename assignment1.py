@@ -53,7 +53,7 @@ class game:
         deck.pop(0)
         score = 0
 
-        print(f"Dealer's hand is: {dealer} with a value of {self.value(dealer)}")
+        print(f"\nDealer's hand is: {(str(dealer)[1:-1])} with a value of {self.value(dealer)}")
 
         Done = False
 
@@ -79,10 +79,9 @@ class game:
     
     def decision(self):
         while True:
-            choice = input("Would you like to hit or stand?")
+            choice = input("Would you like to hit or stand? ")
             if choice == "hit" or choice == "Hit":
-                return True
-                
+                return True 
                 
             elif choice == "stand" or choice == "Stand":
                 return False
@@ -95,7 +94,7 @@ class game:
         hand.append(deck[0])
         deck.pop(0)
         
-        print(f"\nYour hand is {hand} with a value of {self.value(hand)}")
+        print(f"\nYour hand is {(str(hand)[1:-1])} with a value of {self.value(hand)}")
 
         while Done == False:
 
@@ -107,7 +106,10 @@ class game:
                     break
 
                 else:
-                    print(f"\nYour hand is {hand} with a value of {self.value(hand)}")
+
+                    print ("\033[A                                                  \033[A")
+                    print (f"\033[A                                                  \033[A")
+                    print(f"Your hand is {(str(hand)[1:-1])} with a value of {self.value(hand)}")
 
                     try:
                         if (self.value(hand)) > 21:
@@ -130,32 +132,54 @@ class game:
                 Done = True
                 
 
-
         return [ hand , score , deck ]
     
-    def winner(self,computerh,computer,playerh,player):
-        print(f"Dealer's hand is {computerh}, with a value of {computer}")
+    def winner(self,dealerh,dealer,player):
+        import time
+        
+        print(f"Dealer's hand is {(str(dealerh)[1:-1])}, with a value of {dealer}")
+
+        #dealing with aces
+        try:
+            if player[0] < 22 and player[1] < 22:
+                if player[0] > player[1]:
+                    player = player[0]
+
+                elif player[0] < player[1]:
+                    player = player[1]
+
+            elif player[0] < 22:
+                player[0] = player
+
+            elif player[1] < 22:
+                player[1] = player
+
+        except:
+            pass
 
         if player > 21:
-            print(f"You busted")
+            print(f"\033[1;31;40mYou busted \033[0m")
         
-        elif computer == 21:
-            print("You lose, dealer had blackjack ")
+        elif dealer == 21:
+            print(f"\033[1;31;40mYou lose, dealer had blackjack \033[0m")
         
         elif player == 21:
-            print(f"You win, you got blackjack! ")
-        
-        elif computer > player and computer < 21 :
-            print("You lost, dealer had a higher value hand")
-        
-        elif computer < player and computer < 21:
-            print("You won, you had a higher value hand")
+            print(f"\033[1;32;40mYou win, you got blackjack! \033[0m")
 
-        elif computer > 21:
-            print("You won dealer busted")
+        elif dealer > player and dealer < 21 :
+            print(f"\033[1;31;40mYou lost, dealer had a higher value hand \033[0m")
         
-        elif computer == player:
-            print("It's a draw")
+        elif dealer < player and dealer < 21:
+            print(f"\033[1;32;40mYou won, you had a higher value hand \033[0m")
+
+        elif dealer > 21:
+            print(f"\033[1;32;40mYou won dealer busted \033[0m")
+        
+        elif dealer == player:
+            print(f"\033[1;35;40mIt's a draw \033[0m")
+        print("\n\n\n")
+
+        time.sleep(1)
 
     def __init__(self):
         while True:
@@ -163,13 +187,8 @@ class game:
             dealer = self.dealer(deck)
             player = self.player(deck)
 
-            self.winner(dealer[0],dealer[1],player[0],player[1])
-
+            self.winner(dealer[0],dealer[1],player[1])
             pass
-
-
-
-
 
 
 g = game()
