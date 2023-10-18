@@ -53,7 +53,7 @@ class game:
         deck.pop(0)
         score = 0
 
-        print(f"\nDealer's hand is: {(str(dealer)[1:-1])} with a value of {self.value(dealer)}")
+        print(f"\nDealer's hand is {(dealer)[0]} with a value of {self.value(dealer)}")
 
         Done = False
 
@@ -94,8 +94,8 @@ class game:
         hand.append(deck[0])
         deck.pop(0)
         
-        print(f"\nYour hand is {(str(hand)[1:-1])} with a value of {self.value(hand)}")
-
+        print(f"\nYour hand is {hand[0]} with a value of {self.value(hand)}")
+        
         while Done == False:
 
             if self.decision() == True:
@@ -106,10 +106,16 @@ class game:
                     break
 
                 else:
-
                     print ("\033[A                                                  \033[A")
-                    print (f"\033[A                                                  \033[A")
-                    print(f"Your hand is {(str(hand)[1:-1])} with a value of {self.value(hand)}")
+                    print ("\033[A                                                  \033[A")
+                    print("Your hand is ",end="")
+
+                    for i in hand: 
+                        print(i,end="")
+                        if len(hand) > 1 and (hand[len(hand)-1] != i):
+                            print(", ",end="")
+
+                    print(f" with a value of {self.value(hand)}")
 
                     try:
                         if (self.value(hand)) > 21:
